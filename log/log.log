@@ -1,0 +1,46 @@
+2022-04-11 21:50:45,996 mongoManager.py:9 start mongoManager
+2022-04-11 21:50:46,002 mongoManager.py:13 insert data to collection:reviews, inserted_id:625432350a4bfa6e0fd42b6d
+2022-04-11 21:50:46,005 mongoManager.py:17 query data from collection:reviews, sql:{'reviews': 'test'}, res:{'_id': ObjectId('62542e717f7ceac676ae4f60'), 'reviews': 'test', 'rating': 3, 'cuisine': 'aoligei'}
+2022-04-11 21:51:41,617 main.py:6 FinancialDataCrawler start------------------------
+2022-04-11 21:51:41,619 mongoManager.py:9 start mongoManager
+2022-04-11 21:51:41,624 mongoManager.py:13 insert data to collection:reviews, inserted_id:6254326d43781c4e3122cc01
+2022-04-11 21:51:41,625 mongoManager.py:17 query data from collection:reviews, sql:{'reviews': 'test'}, res:{'_id': ObjectId('62542e717f7ceac676ae4f60'), 'reviews': 'test', 'rating': 3, 'cuisine': 'aoligei'}
+2022-04-11 21:51:51,540 main.py:6 FinancialDataCrawler start----------------------------------------------------------
+2022-04-11 21:51:51,543 mongoManager.py:9 start mongoManager
+2022-04-11 21:51:51,547 mongoManager.py:13 insert data to collection:reviews, inserted_id:625432770e52f0ab937a4350
+2022-04-11 21:51:51,550 mongoManager.py:17 query data from collection:reviews, sql:{'reviews': 'test'}, res:{'_id': ObjectId('62542e717f7ceac676ae4f60'), 'reviews': 'test', 'rating': 3, 'cuisine': 'aoligei'}
+2022-04-11 21:52:19,211 main.py:6 -------------------------------------------------------------------------------------
+2022-04-11 21:52:19,211 main.py:7 FinancialDataCrawler start
+2022-04-11 21:52:19,214 mongoManager.py:9 start mongoManager
+2022-04-11 21:52:19,218 mongoManager.py:13 insert data to collection:reviews, inserted_id:6254329306f6357c326de8a6
+2022-04-11 21:52:19,219 mongoManager.py:17 query data from collection:reviews, sql:{'reviews': 'test'}, res:{'_id': ObjectId('62542e717f7ceac676ae4f60'), 'reviews': 'test', 'rating': 3, 'cuisine': 'aoligei'}
+2022-04-12 19:05:19,171 main.py:7 -------------------------------------------------------------------------------------
+2022-04-12 19:05:19,172 main.py:8 FinancialDataCrawler start
+2022-04-12 19:05:19,175 mongoManager.py:9 start mongoManager
+2022-04-12 19:05:19,193 mongoManager.py:13 insert data to collection:reviews, inserted_id:62555cef200ad5add039ae40
+2022-04-12 19:05:19,196 mongoManager.py:17 query data from collection:reviews, sql:{'reviews': 'test'}, res:{'_id': ObjectId('62542e717f7ceac676ae4f60'), 'reviews': 'test', 'rating': 3, 'cuisine': 'aoligei'}
+2022-04-12 19:05:32,623 main.py:7 -------------------------------------------------------------------------------------
+2022-04-12 19:05:32,623 main.py:8 FinancialDataCrawler start
+2022-04-12 19:05:32,625 mongoManager.py:9 start mongoManager
+2022-04-12 19:05:32,630 mongoManager.py:13 insert data to collection:reviews, inserted_id:62555cfce388541a1e51a4c3
+2022-04-12 19:05:32,631 mongoManager.py:17 query data from collection:reviews, sql:{'reviews': 'test'}, res:{'_id': ObjectId('62542e717f7ceac676ae4f60'), 'reviews': 'test', 'rating': 3, 'cuisine': 'aoligei'}
+2022-04-12 19:05:38,858 main.py:7 -------------------------------------------------------------------------------------
+2022-04-12 19:05:38,858 main.py:8 FinancialDataCrawler start
+2022-04-12 19:05:38,860 mongoManager.py:9 start mongoManager
+2022-04-12 19:05:38,864 mongoManager.py:13 insert data to collection:reviews, inserted_id:62555d022c295e31722aba72
+2022-04-12 19:05:38,864 mongoManager.py:17 query data from collection:reviews, sql:{'reviews': 'test'}, res:{'_id': ObjectId('62542e717f7ceac676ae4f60'), 'reviews': 'test', 'rating': 3, 'cuisine': 'aoligei'}
+2022-04-12 19:05:49,434 main.py:7 -------------------------------------------------------------------------------------
+2022-04-12 19:05:49,434 main.py:8 FinancialDataCrawler start
+2022-04-12 19:05:49,437 mongoManager.py:9 start mongoManager
+2022-04-12 19:05:49,441 mongoManager.py:13 insert data to collection:reviews, inserted_id:62555d0d855734784cf25c0d
+2022-04-12 19:05:49,442 mongoManager.py:17 query data from collection:reviews, sql:{'reviews': 'test'}, res:{'_id': ObjectId('62542e717f7ceac676ae4f60'), 'reviews': 'test', 'rating': 3, 'cuisine': 'aoligei'}
+2022-04-12 19:05:54,903 main.py:7 -------------------------------------------------------------------------------------
+2022-04-12 19:05:54,903 main.py:8 FinancialDataCrawler start
+2022-04-12 19:05:54,906 mongoManager.py:9 start mongoManager
+2022-04-12 19:05:54,911 mongoManager.py:13 insert data to collection:reviews, inserted_id:62555d12e48bd0b3b0b1530b
+2022-04-12 19:05:54,912 mongoManager.py:17 query data from collection:reviews, sql:{'reviews': 'test'}, res:{'_id': ObjectId('62542e717f7ceac676ae4f60'), 'reviews': 'test', 'rating': 3, 'cuisine': 'aoligei'}
+2022-04-13 14:14:20,986 main.py:7 -------------------------------------------------------------------------------------
+2022-04-13 14:14:20,987 main.py:8 FinancialDataCrawler start
+2022-04-13 14:14:21,007 mongoManager.py:9 start mongoManager
+2022-04-13 14:14:21,045 mongoManager.py:13 insert data to collection:reviews, inserted_id:62566a3d28b924c857e094ae
+2022-04-13 14:14:21,047 mongoManager.py:17 query data from collection:reviews, sql:{'reviews': 'test'}, res:{'_id': ObjectId('62542e717f7ceac676ae4f60'), 'reviews': 'test', 'rating': 3, 'cuisine': 'aoligei'}
