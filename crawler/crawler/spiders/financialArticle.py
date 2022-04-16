@@ -9,7 +9,6 @@ class FinancialarticleSpider(scrapy.Spider):
     link_extractor = LinkExtractor()
     i = 0
 
-
     filter_keyword = 'news.hexun.com'
     title_xpath = '//h1'
     post_time_xpath = '/html/body/div[5]/div/div[1]/span'
@@ -125,7 +124,6 @@ class FinancialarticleSpider(scrapy.Spider):
             if link.url.find(self.filter_keyword) is not -1:
                 yield scrapy.Request(url=link.url, callback=self.parse_article)
 
-
     def parse_article(self, response):
         for link in self.link_extractor.extract_links(response):
             if link.url.find(self.filter_keyword) is not -1:
@@ -145,6 +143,3 @@ class FinancialarticleSpider(scrapy.Spider):
         article['author'] = author
         article['post_time'] = post_time
         yield article
-
-
-

@@ -38,7 +38,7 @@ class ArticlePipeline:
         self.client.close()
 
     def process_item(self, item, spider):
-        if not item['title'] or not item['content']:
+        if not item['title'] or not item['content'] or not item['post_time'] or not item['author']:
             return DropItem("invalid item title found: %s" % item['title'])
         if item['title'] in self.titles_seen:
             return DropItem("Duplicate item title found: %s" % item['title'])
