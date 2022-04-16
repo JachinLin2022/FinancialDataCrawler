@@ -1,0 +1,30 @@
+{
+  "site_map": [
+    {
+      "url": "https://www.eastmoney.com/",
+      "pattern": {
+        "filter_keyword": [
+          "eastmoney.com",
+          "/a/"
+        ],
+        "title_xpath": "//*[@id=\"topbox\"]/div[1]",
+        "post_time_xpath": "//*[@id=\"topbox\"]/div[3]/div[1]/div[1]",
+        "author_xpath": "//*[@id=\"topbox\"]/div[3]/div[1]/div[2]",
+        "content_xpath": "//*[@id=\"ContentBody\"]//p"
+      }
+    },
+    {
+      "url": "https://finance.ifeng.com/",
+      "pattern": {
+        "filter_keyword": [
+          "finance.ifeng.com",
+          "/c/"
+        ],
+        "title_xpath": "//*[@id=\"root\"]/div/div[3]/div[1]/div[1]/div[1]/h1",
+        "post_time_xpath": "//*[@id=\"root\"]/div/div[3]/div[1]/div[1]/div[1]/div[1]/a/div[2]/div[2]",
+        "author_xpath": "//*[@id=\"root\"]/div/div[3]/div[1]/div[1]/div[1]/div[1]/a/div[2]/div[1]",
+        "content_xpath": "//*[@id=\"root\"]/div/div[3]/div[1]/div[1]/div[3]/div/div[1]/p"
+      }
+    }
+  ]
+}

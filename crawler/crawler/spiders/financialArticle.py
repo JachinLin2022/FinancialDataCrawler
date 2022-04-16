@@ -2,25 +2,71 @@ import scrapy
 from ..items import ArticleItem
 from scrapy.linkextractors import LinkExtractor
 import datetime
+import json
 
 
 class FinancialarticleSpider(scrapy.Spider):
     name = 'financialArticle'
     link_extractor = LinkExtractor()
     i = 0
-
-    filter_keyword = 'news.hexun.com'
-    title_xpath = '//h1'
-    post_time_xpath = '/html/body/div[5]/div/div[1]/span'
-    author_xpath = '//div[@class="tip fl"]/a'
-    content_xpath = '//div[@class="art_contextBox"]//p'
-
-    def start_crawl_general(self):
-        url = 'https://www.hexun.com/'
-        yield scrapy.Request(url=url, callback=self.gen_link)
+    site_map = json.load(open("./config.json", "r"))['site_map']
 
     def start_requests(self):
-        return self.start_crawl_general()
+        for url_info in self.site_map:
+            yield scrapy.Request(url=url_info['url'], callback=self.gen_link,
+                                 meta={'pattern': url_info['pattern']})
+
+    def gen_link(self, response):
+        pattern = response.meta.get('pattern')
+        for link in self.link_extractor.extract_links(response):
+            index = link.url.find(pattern['filter_keyword'][0])
+            if index > 30 or index < 0:
+                continue
+            valid = 1
+            for key in pattern['filter_keyword']:
+                if link.url.find(key) == -1:
+                    valid = 0
+                    break
+            if valid:
+                yield scrapy.Request(url=link.url, callback=self.parse_article, meta={'pattern': pattern})
+            # yield scrapy.Request(url=link.url, callback=self.parse_article)
+            # if link.url.find(self.filter_keyword) != -1:
+            #     yield scrapy.Request(url=link.url, callback=self.parse_article)
+
+    def parse_article(self, response):
+        pattern = response.meta.get('pattern')
+        for link in self.link_extractor.extract_links(response):
+            index = link.url.find(pattern['filter_keyword'][0])
+            if index > 20 or index < 0:
+                continue
+            valid = 1
+            for key in pattern['filter_keyword']:
+                if link.url.find(key) == -1:
+                    valid = 0
+                    break
+            if valid:
+                yield scrapy.Request(url=link.url, callback=self.parse_article, meta={'pattern': pattern})
+            # else:
+            #     yield scrapy.Request(url=link.url, callback=self.gen_link)
+        # for link in self.link_extractor.extract_links(response):
+        #     if link.url.find(self.filter_keyword) != -1:
+        #         yield scrapy.Request(url=link.url, callback=self.parse_article)
+        #     else:
+        #         yield scrapy.Request(url=link.url, callback=self.gen_link)
+        title = response.xpath(pattern['title_xpath'] + '/text()').get() or ''
+        post_time = response.xpath(pattern['post_time_xpath'] + '/text()').get() or ''
+        author = response.xpath(pattern['author_xpath'] + '/text()').get() or ''
+        author = author.replace('\n', '').strip()
+        content = response.xpath(pattern['content_xpath'] + '/text()').getall() or ''
+        content = ''.join(content)
+
+        article = ArticleItem()
+        article['title'] = title
+        article['content'] = content
+        article['author'] = author
+        article['post_time'] = post_time
+        print(title)
+        yield article
 
     def start_crawl_sina(self):
         url = 'https://finance.sina.com.cn/'
@@ -43,18 +89,18 @@ class FinancialarticleSpider(scrapy.Spider):
 
     def gen_eastmoney_link(self, response):
         for link in self.link_extractor.extract_links(response):
-            if link.url.find('finance.eastmoney.com/a') is not -1:
+            if link.url.find('finance.eastmoney.com/a') != -1:
                 yield scrapy.Request(url=link.url, callback=self.parse_eastmoney_article)
-            elif link.url.find('finance.eastmoney.com') is not -1:
+            elif link.url.find('finance.eastmoney.com') != -1:
                 yield scrapy.Request(url=link.url, callback=self.gen_eastmoney_link)
 
     def parse_eastmoney_article(self, response):
         for link in self.link_extractor.extract_links(response):
-            if link.url.find('finance.eastmoney.com/a') is not -1:
+            if link.url.find('finance.eastmoney.com/a') != -1:
                 yield scrapy.Request(url=link.url, callback=self.parse_eastmoney_article)
-            elif link.url.find('finance.eastmoney.com') is not -1:
+            elif link.url.find('finance.eastmoney.com') != -1:
                 yield scrapy.Request(url=link.url, callback=self.gen_eastmoney_link)
-        # if link.url.find('finance.eastmoney.com/a') is not -1:
+        # if link.url.find('finance.eastmoney.com/a') != -1:
         #     self.i = self.i + 1
         #     print(self.i, link.url)
         #     yield scrapy.Request(url=link.url, callback=self.parse_article)
@@ -74,7 +120,7 @@ class FinancialarticleSpider(scrapy.Spider):
 
     def gen_stockstar_link(self, response):
         for link in self.link_extractor.extract_links(response):
-            if link.url.find('finance.stockstar.com') is not -1:
+            if link.url.find('finance.stockstar.com') != -1:
                 yield scrapy.Request(url=link.url, callback=self.parse_stockstar_article)
 
     def parse_stockstar_article(self, response):
@@ -94,14 +140,14 @@ class FinancialarticleSpider(scrapy.Spider):
     def gen_sina_link(self, response):
         # return scrapy.Request(url='https://finance.sina.com.cn/china/2022-04-13/doc-imcwipii4092180.shtml', callback=self.parse_sina_article)
         for link in self.link_extractor.extract_links(response):
-            if link.url.find('shtml') is not -1 and link.url.find('finance.sina.com.cn') is not -1:
+            if link.url.find('shtml') != -1 and link.url.find('finance.sina.com.cn') != -1:
                 yield scrapy.Request(url=link.url, callback=self.parse_sina_article)
-            # elif link.url.find('finance.eastmoney.com') is not -1:
+            # elif link.url.find('finance.eastmoney.com') != -1:
             #     yield scrapy.Request(url=link.url, callback=self.gen_sina_link)
 
     def parse_sina_article(self, response):
         for link in self.link_extractor.extract_links(response):
-            if link.url.find('shtml') is not -1 and link.url.find('finance.sina.com.cn') is not -1:
+            if link.url.find('shtml') != -1 and link.url.find('finance.sina.com.cn') != -1:
                 yield scrapy.Request(url=link.url, callback=self.parse_sina_article)
             else:
                 yield scrapy.Request(url=link.url, callback=self.gen_sina_link)
@@ -110,31 +156,6 @@ class FinancialarticleSpider(scrapy.Spider):
         author = response.xpath('//*[@id="top_bar"]/div/div[2]/span[2]/text()').get() or ''
         author = author.strip().replace('\r\n', '')
         content = response.xpath('//*[@id="artibody"]/p/text()').getall() or ''
-        content = ''.join(content)
-
-        article = ArticleItem()
-        article['title'] = title
-        article['content'] = content
-        article['author'] = author
-        article['post_time'] = post_time
-        yield article
-
-    def gen_link(self, response):
-        for link in self.link_extractor.extract_links(response):
-            if link.url.find(self.filter_keyword) is not -1:
-                yield scrapy.Request(url=link.url, callback=self.parse_article)
-
-    def parse_article(self, response):
-        for link in self.link_extractor.extract_links(response):
-            if link.url.find(self.filter_keyword) is not -1:
-                yield scrapy.Request(url=link.url, callback=self.parse_article)
-            else:
-                yield scrapy.Request(url=link.url, callback=self.gen_link)
-        title = response.xpath(self.title_xpath + '/text()').get() or ''
-        post_time = response.xpath(self.post_time_xpath + '/text()').get() or ''
-        author = response.xpath(self.author_xpath + '/text()').get() or ''
-        author = author.replace('\n', '').strip()
-        content = response.xpath(self.content_xpath + '/text()').getall() or ''
         content = ''.join(content)
 
         article = ArticleItem()

@@ -28,13 +28,13 @@ class ArticlePipeline:
         )
 
     def open_spider(self, spider):
-        self.file = open('items.jl', 'w', encoding='utf-8')
+        # self.file = open('items.jl', 'w', encoding='utf-8')
         self.titles_seen = set()
         self.client = pymongo.MongoClient(port=self.mongo_uri)
         self.db = self.client[self.mongo_db]
 
     def close_spider(self, spider):
-        self.file.close()
+        # self.file.close()
         self.client.close()
 
     def process_item(self, item, spider):
