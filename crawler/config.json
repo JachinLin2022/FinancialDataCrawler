@@ -1,10 +1,84 @@
 {
   "site_map": [
     {
+      "source": "搜狐财经",
+      "valid": 1,
+      "url": "https://business.sohu.com/?spm=smpc.ch15.search.1.1650452461689DhbnUB5",
+      "pattern": {
+        "filter_keyword": [
+          "//www.sohu.com",
+          "/a/"
+        ],
+        "title_xpath": "//h1",
+        "post_time_xpath": "//*[@id=\"news-time\"]",
+        "author_xpath": "//*[@id=\"user-info\"]/h4/a",
+        "content_xpath": "//*[@id=\"mp-editor\"]/p"
+      }
+    },
+    {
+      "valid": 0,
+      "url": "http://www.china.com.cn/",
+      "pattern": {
+        "filter_keyword": [
+          "finance.china.com.cn",
+          "shtml"
+        ],
+        "title_xpath": "//h1",
+        "post_time_xpath": "/html/body/div[4]/span",
+        "author_xpath": "/html/body/div[4]/span/a",
+        "content_xpath": "//*[@id=\"fontzoom\"]/p"
+      }
+    },
+    {
+      "valid": 0,
+      "url": "https://finance.sina.com.cn/",
+      "pattern": {
+        "filter_keyword": [
+          "finance.sina.com.cn",
+          "doc",
+          "shtml"
+        ],
+        "title_xpath": "//h1",
+        "post_time_xpath": "//*[@class=\"date\"]",
+        "author_xpath": "//*[@class=\"source ent-source\"]",
+        "content_xpath": "//*[@id=\"artibody\"]/p"
+      }
+    },
+    {
+      "valid": 0,
+      "url": "https://finance.sina.com.cn/",
+      "pattern": {
+        "filter_keyword": [
+          "finance.sina.com.cn",
+          "doc",
+          "shtml"
+        ],
+        "title_xpath": "//h1",
+        "post_time_xpath": "//*[@class=\"date\"]",
+        "author_xpath": "//*[@class=\"source ent-source\"]",
+        "content_xpath": "//*[@id=\"artibody\"]/p"
+      }
+    },
+    {
+      "valid": 0,
+      "url": "http://www.caijing.com.cn/",
+      "pattern": {
+        "filter_keyword": [
+          "caijing.com.cn",
+          "shtml"
+        ],
+        "title_xpath": "//h2",
+        "post_time_xpath": "//*[@id=\"pubtime_baidu\"]",
+        "author_xpath": "//*[@id=\"source_baidu\"]/a",
+        "content_xpath": "//*[@id=\"the_content\"]/p"
+      }
+    },
+    {
+      "valid": 0,
       "url": "https://www.eastmoney.com/",
       "pattern": {
         "filter_keyword": [
-          "eastmoney.com",
+          "finance.eastmoney.com",
           "/a/"
         ],
         "title_xpath": "//*[@id=\"topbox\"]/div[1]",
@@ -14,17 +88,51 @@
       }
     },
     {
+      "valid": 0,
       "url": "https://finance.ifeng.com/",
       "pattern": {
         "filter_keyword": [
           "finance.ifeng.com",
           "/c/"
         ],
-        "title_xpath": "//*[@id=\"root\"]/div/div[3]/div[1]/div[1]/div[1]/h1",
-        "post_time_xpath": "//*[@id=\"root\"]/div/div[3]/div[1]/div[1]/div[1]/div[1]/a/div[2]/div[2]",
-        "author_xpath": "//*[@id=\"root\"]/div/div[3]/div[1]/div[1]/div[1]/div[1]/a/div[2]/div[1]",
-        "content_xpath": "//*[@id=\"root\"]/div/div[3]/div[1]/div[1]/div[3]/div/div[1]/p"
+        "title_xpath": "//h1",
+        "post_time_xpath": "//*[@class=\"timeBref-2lHnksft\"]",
+        "author_xpath": "//*[@class=\"sourceTitle-2bea4nhZ\"]",
+        "content_xpath": "//*[@class=\"text-3w2e3DBc\"]/p"
+      }
+    }
+  ],
+  "roll_site_map": [
+    {
+      "valid": 0,
+      "roll_url": "http://app.finance.china.com.cn/news/live.php?channel=%E8%B4%A2%E7%BB%8F&p={}",
+      "pattern": {
+        "filter_keyword": [
+          "finance.china.com.cn",
+          "shtml"
+        ],
+        "title_xpath": "//h1",
+        "post_time_xpath": "/html/body/div[4]/span",
+        "author_xpath": "/html/body/div[4]/span/a",
+        "content_xpath": "//*[@id=\"fontzoom\"]/p"
+      }
+    },
+    {
+      "valid": 0,
+      "roll_url": "http://finance.sina.com.cn/roll/#pageid=384&lid=2519&k=&num=50&page={}",
+      "pattern": {
+        "filter_keyword": [
+          "finance.sina.com.cn",
+          "doc-",
+          "shtml"
+        ],
+        "title_xpath": "//h1",
+        "post_time_xpath": "//*[@class=\"date\"]",
+        "author_xpath": "//*[@class=\"source ent-source\"]",
+        "content_xpath": "//*[@id=\"artibody\"]/p"
       }
     }
   ]
+
+
 }
