@@ -9,10 +9,14 @@ from itemadapter import ItemAdapter
 from scrapy.exceptions import DropItem
 from itemadapter import ItemAdapter
 from elasticsearch import Elasticsearch
+import happybase
 
 class NewscrawlerPipeline:
     def open_spider(self, spider):
         self.es = Elasticsearch(hosts="http://localhost:9200")
+        self.hbase = happybase.Connection(host='hadoop1')
+        self.news_table = self.hbase.table('news')
+
 
     def process_item(self, item, spider):
         if not item['title'] or not item['content']:
@@ -24,8 +28,16 @@ class NewscrawlerPipeline:
             # self.file.write(line.decode() + '\n')
             # self.titles_seen.add(item['title'])
             try:
-                self.es.index(index='financial_data', document=ItemAdapter(item).asdict())
                 # self.db[self.collection_name].insert_one(ItemAdapter(item).asdict())
+                d = {
+                    'article:content': item['content'],
+                    'article:url': item['url'],
+                    'article:title': item['title']
+                }
+                self.news_table.put(item['title'],data=d)
+                item['content'] = item['content'][0:100] + '...'
+                self.es.index(index='financial_data', document=ItemAdapter(item).asdict())
+
                 return item
             except:
                 return DropItem("Duplicate item title found: %s" % item['title'])
