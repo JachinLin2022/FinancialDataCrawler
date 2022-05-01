@@ -8,7 +8,11 @@ class linkSpider(scrapy.Spider):
     redis = redis.Redis(host='localhost',port=6379)
     # start_urls = ['https://www.google.com/search?q=site%3Aeastmoney.com&tbm=nws']
     def start_requests(self):
-        base_url = 'https://www.bing.com/search?q=site:finance.eastmoney.com/a/'
+        urls = [
+            'https://www.bing.com/search?q=site:finance.eastmoney.com/a/',
+            'https://www.bing.com/search?q=site%3Astockstar.com+shtml'
+        ]
+        base_url = 'https://www.bing.com/search?q=site%3Astockstar.com+shtml'
         # query = ''
         for j in range(19000,19112):
             url = base_url + '&filters=ex1%3a\"ez5_{0}_{1}\"'.format(j,j+1)
@@ -19,6 +23,7 @@ class linkSpider(scrapy.Spider):
 
     def parse(self, response):
         for link in self.link_extractor.extract_links(response):
-            if link.url.find('//finance.eastmoney.com/a/') >=0:
-                print(link.url)
-                self.redis.sadd('news:start_urls', link.url)
+            if link.url.find('search') < 0:
+                if self.redis.sismember('news:crawl_urls', link.url) == 0:
+                    if self.redis.sadd('news:start_urls', link.url) == 1:
+                        print(link.url)

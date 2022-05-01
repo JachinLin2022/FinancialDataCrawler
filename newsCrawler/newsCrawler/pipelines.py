@@ -35,8 +35,8 @@ class NewscrawlerPipeline:
                     'article:title': item['title']
                 }
                 self.news_table.put(item['title'],data=d)
-                item['content'] = item['content'][0:100] + '...'
-                self.es.index(index='financial_data', document=ItemAdapter(item).asdict())
+                # item['content'] = item['content'][0:100] + '...'
+                # self.es.index(index='financial_data', document=ItemAdapter(item).asdict())
 
                 return item
             except:

@@ -13,15 +13,15 @@ SPIDER_MODULES = ['newsCrawler.spiders']
 NEWSPIDER_MODULE = 'newsCrawler.spiders'
 
 # Enables scheduling storing requests queue in redis.
-SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+# SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 
 # Ensure all spiders share same duplicates filter through redis.
-DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+# DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 
 # Specify the host and port to use when connecting to Redis (optional).
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
-# RETRY_ENABLED = False
+RETRY_ENABLED = False
 REDIS_START_URLS_AS_SET = True
 
 # Don't cleanup redis queues, allows to pause/resume crawls.
@@ -41,13 +41,13 @@ REDIS_START_URLS_KEY = 'news:start_urls'
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 256
-
+CONCURRENT_REQUESTS = 1024
+TELNETCONSOLE_PASSWORD = '1234'
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
 DOWNLOAD_DELAY = 0
-DOWNLOAD_TIMEOUT = 15
+DOWNLOAD_TIMEOUT = 10
 # The download delay setting will honor only one of:
 CONCURRENT_REQUESTS_PER_DOMAIN = 1024
 #CONCURRENT_REQUESTS_PER_IP = 16
