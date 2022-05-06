@@ -2,6 +2,7 @@ import numpy as np
 from dtw import *
 ## A noisy sine wave as query
 idx = np.linspace(0,6.28,num=100)
+
 query = np.sin(idx) + np.random.uniform(size=100)/10.0
 
 ## A cosine is for template; sin and cos are offset by 25 samples
