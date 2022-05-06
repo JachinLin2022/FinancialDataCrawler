@@ -3,7 +3,7 @@ from scrapy.linkextractors import LinkExtractor
 link_extractor = LinkExtractor()
 import redis
 class linkSpider(scrapy.Spider):
-    name = 'link'
+    name = 'link_copy'
     link_extractor = LinkExtractor()
     redis = redis.Redis(host='192.168.137.128',port=6379)
     # start_urls = ['https://www.google.com/search?q=site%3Aeastmoney.com&tbm=nws']
@@ -14,24 +14,25 @@ class linkSpider(scrapy.Spider):
         }
         urls = [
             'site:finance.eastmoney.com/a/',
-            'site%3Astockstar.com+shtml',
-            'site%3Afinance.sina.com.cn+doc',
-            'site:hexun.com html',
-            'site:mp.cnfol.com'
+            # 'site%3Astockstar.com+shtml',
+            # 'site%3Afinance.sina.com.cn+doc',
+            # 'site:hexun.com html',
+            # 'site:mp.cnfol.com'
         ]
         for url in urls:
             base_url = 'https://cn.bing.com/search?q=' + url
             # query = ''
-            for j in range(19100,19120):
+            for j in range(19110,19111):
                 url = base_url + '&filters=ex1%3a\"ez5_{0}_{1}\"'.format(j,j+1)
                 first = 0
-                for i in range(10):
+                for i in range(1):
                     yield scrapy.Request(url=url+'&first={}'.format(first), callback=self.parse, headers = headers)
                     first = first + 50
 
     def parse(self, response):
         for link in self.link_extractor.extract_links(response):
             if link.url.find('search') < 0 and link.url.find('bing') < 0 and link.url.find('html') >= 0:
+                print(link.url)
                 if self.redis.sismember('news:crawl_urls', link.url) == 0:
                     if self.redis.sadd('news:start_urls', link.url) == 1:
                         print(link.url)
