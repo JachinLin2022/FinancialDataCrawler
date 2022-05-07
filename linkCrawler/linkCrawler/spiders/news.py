@@ -39,6 +39,11 @@ class newsSpider(scrapy.Spider):
         }
         print(title)
         self.news_table.put(title, data=article)
+        self.es.index(index='financial_data', document={
+            'title': title,
+            'content': content,
+            'url': response.url[0:50],
+        })
 
                 
         

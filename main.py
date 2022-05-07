@@ -6,22 +6,18 @@ import json
 import threading
 import redis
 import os
-import time
-#
-from twisted.internet import reactor
-from linkCrawler.linkCrawler.spiders.link import linkSpider
-from scrapy.utils.log import configure_logging
-from scrapy.utils.project import get_project_settings
-from scrapy.crawler import CrawlerRunner
+from elasticsearch import Elasticsearch
 
 hbase = happybase.Connection(host='192.168.137.128')
 stock_table = hbase.table('stock')
+news_table = hbase.table('news')
 app = Flask(__name__)
 app.debug = True
 CORS(app, supports_credentials=True)
 redis_clients = []
 redis_clients.append(redis.Redis(host='192.168.137.128', port=6379))
 redis_clients.append(redis.Redis(host='192.168.137.129', port=6379))
+es = Elasticsearch(hosts="http://192.168.137.128:9200")
 
 @app.route("/")
 def hello_world():
@@ -94,4 +90,37 @@ def save_spider():
         f.write(content)
         return 'ok'
 
-# os.system('cd linkCrawler && start scrapy crawl link')
+@app.route('/search_article', methods=['POST'])
+def search_article():
+    keyword = request.form.get('keyword')
+    body = {
+        'query':{
+            'match':{
+                'title':keyword
+            }
+        }
+    }
+    search = es.search(index='financial_data', body=body)
+    format_res = []
+    for hit in search['hits']['hits']:
+        format_res.append({
+            'title': hit['_source']['title'],
+            'content': hit['_source']['content'],
+            'url': hit['_source']['url'],
+        })
+    return {
+        'data':format_res
+    }
+
+
+@app.route('/get_article', methods=['POST'])
+def get_article():
+    title = request.form.get('title')
+    row = news_table.row(title)
+    format_data = {
+        'content':str(row[b'article:content'],'utf-8'),
+        'title':str(row[b'article:title'],'utf-8'),
+        'url':str(row[b'article:url'],'utf-8'),
+    }
+    # print(format_data)
+    return format_data
