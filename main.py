@@ -12,10 +12,6 @@ from sklearn import preprocessing
 from dtw import *
 import numpy as np
 import matplotlib.pyplot as plt
-
-hbase = happybase.Connection(host='192.168.137.128')
-stock_table = hbase.table('stock')
-news_table = hbase.table('news')
 app = Flask(__name__)
 app.debug = True
 CORS(app, supports_credentials=True)
@@ -32,6 +28,8 @@ def hello_world():
 
 @app.route('/get_stock_board', methods=['POST'])
 def get_stock_board():
+    hbase = happybase.Connection(host='192.168.137.128')
+    stock_table = hbase.table('stock')
     start = request.form.get('start')
     limit = request.form.get('limit')
     res = {
@@ -44,6 +42,8 @@ def get_stock_board():
 
 @app.route('/get_stock_trend', methods=['POST'])
 def get_stock_trend():
+    hbase = happybase.Connection(host='192.168.137.128')
+    stock_table = hbase.table('stock')
     stockNo = request.form.get('stockNo')
     row = stock_table.row(stockNo, columns=['info:trend'])
     data = str(row[b'info:trend'], 'utf-8').split(';')
@@ -51,6 +51,8 @@ def get_stock_trend():
 
 @app.route('/get_stock_kline', methods=['POST'])
 def get_stock_kline():
+    hbase = happybase.Connection(host='192.168.137.128')
+    stock_table = hbase.table('stock')
     stockNo = request.form.get('stockNo')
     row = stock_table.row(stockNo, columns=['info:kline'])
     data = str(row[b'info:kline'], 'utf-8').split(';')
@@ -106,7 +108,7 @@ def search_article():
             }
         }
     }
-    search = es.search(index='financial_data', body=body)
+    search = es.search(index='financial_data', body=body, size=10)
     format_res = []
     for hit in search['hits']['hits']:
         format_res.append({
@@ -114,6 +116,7 @@ def search_article():
             'content': hit['_source']['content'],
             'url': hit['_source']['url'],
         })
+    # print(search)
     return {
         'data':format_res
     }
@@ -121,6 +124,8 @@ def search_article():
 
 @app.route('/get_article', methods=['POST'])
 def get_article():
+    hbase = happybase.Connection(host='192.168.137.128')
+    news_table = hbase.table('news')
     title = request.form.get('title')
     row = news_table.row(title)
     format_data = {
@@ -133,15 +138,14 @@ def get_article():
 
 @app.route('/match_kline', methods=['POST'])
 def match_kline():
-
+    hbase = happybase.Connection(host='192.168.137.128')
+    stock_table = hbase.table('stock')
     target = request.form.get('target')
     start = request.form.get('start')
     end = request.form.get('end')
     start_date = time.strftime("%Y-%m-%d", time.localtime(float(start)/1000))
     end_date = time.strftime("%Y-%m-%d", time.localtime(float(end)/1000))
     print(target, start_date, end_date)
-    hbase = happybase.Connection(host='192.168.137.128')
-    stock_table = hbase.table('stock')
     stock_dict = {}
     xlist = []
     print('bianli')

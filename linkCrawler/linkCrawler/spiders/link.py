@@ -22,7 +22,7 @@ class linkSpider(scrapy.Spider):
         for url in urls:
             base_url = 'https://cn.bing.com/search?q=' + url
             # query = ''
-            for j in range(19100,19120):
+            for j in range(19110,19130):
                 url = base_url + '&filters=ex1%3a\"ez5_{0}_{1}\"'.format(j,j+1)
                 first = 0
                 for i in range(10):

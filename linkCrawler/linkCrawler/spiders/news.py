@@ -10,9 +10,9 @@ class newsSpider(scrapy.Spider):
     name = 'news'
     redis_client = redis.Redis(host='192.168.137.128', port=6379)
     hbase = happybase.Connection(host='192.168.137.128')
-    es = Elasticsearch(hosts="http://192.168.137.128:9200")
+    es = Elasticsearch(hosts="http://192.168.137.129:9200")
     news_table = hbase.table('news')
-    size = 1024
+    size = 1111
     # logging.Logger.setLevel('INFO')
     def get_url_from_redis(self):
         urls = self.redis_client.spop('news:start_urls', self.size)
