@@ -149,7 +149,7 @@ def match_kline():
     stock_dict = {}
     xlist = []
     print('bianli')
-    for key, data in stock_table.scan(columns=['info:kline'],limit=5000):
+    for key, data in stock_table.scan(columns=['info:kline']):
         kline = str(data[b'info:kline'], 'utf-8').split(';')
         in_range = 0
         y = []
@@ -164,7 +164,7 @@ def match_kline():
             if in_range == 1:
                 j = j + 1
                 x.append(j)
-                y.append((float(split[1]) + float(split[2])))
+                y.append((float(split[1])+ float(split[3]) + float(split[4]) + float(split[2]))/4)
         if len(y) == 0:
             continue
         y = np.array(y).reshape(-1, 1)
