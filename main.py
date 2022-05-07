@@ -7,6 +7,11 @@ import threading
 import redis
 import os
 from elasticsearch import Elasticsearch
+import time
+from sklearn import preprocessing
+from dtw import *
+import numpy as np
+import matplotlib.pyplot as plt
 
 hbase = happybase.Connection(host='192.168.137.128')
 stock_table = hbase.table('stock')
@@ -18,6 +23,7 @@ redis_clients = []
 redis_clients.append(redis.Redis(host='192.168.137.128', port=6379))
 redis_clients.append(redis.Redis(host='192.168.137.129', port=6379))
 es = Elasticsearch(hosts="http://192.168.137.128:9200")
+scaler = preprocessing.MinMaxScaler()
 
 @app.route("/")
 def hello_world():
@@ -124,3 +130,59 @@ def get_article():
     }
     # print(format_data)
     return format_data
+
+@app.route('/match_kline', methods=['POST'])
+def match_kline():
+
+    target = request.form.get('target')
+    start = request.form.get('start')
+    end = request.form.get('end')
+    start_date = time.strftime("%Y-%m-%d", time.localtime(float(start)/1000))
+    end_date = time.strftime("%Y-%m-%d", time.localtime(float(end)/1000))
+    print(target, start_date, end_date)
+    hbase = happybase.Connection(host='192.168.137.128')
+    stock_table = hbase.table('stock')
+    stock_dict = {}
+    xlist = []
+    print('bianli')
+    for key, data in stock_table.scan(columns=['info:kline'],limit=5000):
+        kline = str(data[b'info:kline'], 'utf-8').split(';')
+        in_range = 0
+        y = []
+        x = []
+        j = 0
+        for i in kline:
+            split = i.split(',')
+            if split[0] == start_date:
+                in_range = 1
+            if split[0] == end_date:
+                in_range = 0
+            if in_range == 1:
+                j = j + 1
+                x.append(j)
+                y.append((float(split[1]) + float(split[2])))
+        if len(y) == 0:
+            continue
+        y = np.array(y).reshape(-1, 1)
+
+        y_norm = scaler.fit_transform(y)
+        stock_dict[str(key,'utf-8')] = y_norm
+        xlist.append(x)
+
+    print('start fit')
+    template = stock_dict[target]
+    min = 999999999999999
+    index = 0
+    emin = 999999999999999
+    eindex = 0
+    for key in stock_dict:
+        if key == target:
+            continue
+        query = stock_dict[key]
+        alignment = dtw(query, template, keep_internals=True)
+        if min > alignment.distance:
+            index = key
+            min = alignment.distance
+
+    # rabinerJuangStepPattern(6, "c").plot()
+    return index
